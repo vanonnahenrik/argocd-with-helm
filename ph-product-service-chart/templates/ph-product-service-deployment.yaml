@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Values.global.deploymentPrefix }}ph-product-service
+  name: {{ .Values.global.deploymentPrefix }}ph-product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.deploymentPrefix }}ph-product-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.deploymentPrefix }}ph-product-service
+    spec:
+      containers:
+      - name: {{ .Values.global.deploymentPrefix }}ph-product-service
+        image: {{ .Values.imageRegistry }}ph-product-service:{{ .Chart.AppVersion }}
+        resources:
+          limits:
+        ports:
+          - name: http
+            containerPort: 8085
+        env:
+        - name: spring_profiles_active
+          value: container
+        - name: PH_K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: PH_K8S_DEPLOYMENTPREFIX
+          value: {{ .Values.global.deploymentPrefix }}
+        - name: RMQ_HOST
+          value: {{ .Values.global.deploymentPrefix }}rabbitmq
+        - name: DB_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.dbConfigMap }}
+              key: {{ .Values.dbConfigMapUrlKey }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.dbSecret }}
+              key: {{ .Values.dbSecretUserKey }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.dbSecret }}
+              key: {{ .Values.dbSecretPwdKey }}
+        - name: DB_DRIVER
+          value: {{ .Values.global.databaseDriver }}
+        - name: DB_QUERY
+          value: {{ .Values.global.databaseValidationQuery }}
+        - name: RMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.rmqSecret }}
+              key: {{ .Values.rmqSecretUserKey }}
+        - name: RMQ_PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.rmqSecret }}
+              key: {{ .Values.rmqSecretPwdKey }}
+{{ if .Values.anetTrustedCAsConfigMap }}
+        - name: ANET_SERVER_PEMTRUSTEDCACERTSFILE
+          value: "/etc/prodis/anet-server-chain/server_chain.crt"
+{{ end }}
+{{ if .Values.anetClientCertSecret }}
+        - name: ANET_SERVER_PEMKEYFILE
+          value: "/etc/prodis/anet-client-cert/client_private_key.pem"
+        - name: ANET_SERVER_PEMCERTFILE
+          value: "/etc/prodis/anet-client-cert/client_certificate.pem"
+{{ end }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Values.global.deploymentPrefix }}ph-product-service-env-config
+        volumeMounts:
+{{ if .Values.anetTrustedCAsConfigMap }}
+        - mountPath: "/etc/prodis/anet-server-chain"
+          name: anet-server-chain
+          readOnly: true
+{{ end }}
+{{ if .Values.anetClientCertSecret }}
+        - mountPath: "/etc/prodis/anet-client-cert"
+          name: anet-client-cert
+          readOnly: true
+{{ end }}
+      volumes:
+{{ if .Values.anetTrustedCAsConfigMap }}
+      - name: anet-server-chain
+        configMap:
+          name: {{ .Values.anetTrustedCAsConfigMap }}
+          items:
+          - key: {{ .Values.anetTrustedCAsConfigMapKey }}
+            path: server_chain.crt
+{{ end }}
+{{ if .Values.anetClientCertSecret }}
+      - name: anet-client-cert
+        secret:
+          secretName: {{ .Values.anetClientCertSecret }}
+          items:
+          - key: {{ .Values.anetClientCertSecretCertKey }}
+            path: client_certificate.pem
+          - key: {{ .Values.anetClientCertSecretPrivKeyKey }}
+            path: client_private_key.pem
+{{ end }}
+{{ if .Values.imageRegistrySecret }}
+      imagePullSecrets:
+      - name: {{ .Values.imageRegistrySecret }}
+{{ end }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: project
+                operator: In
+                values:
+                - planthub

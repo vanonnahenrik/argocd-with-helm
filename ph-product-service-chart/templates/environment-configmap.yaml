@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.deploymentPrefix }}ph-product-service-env-config
+  labels:
+    app: {{ .Values.global.deploymentPrefix }}ph-product-service
+data:
+  {{- range $key, $val := .Values.envConfigmap }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end}}

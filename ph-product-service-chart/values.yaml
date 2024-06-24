@@ -1,0 +1,41 @@
+global:
+  deploymentPrefix: dsa-ph-
+  databaseDriver: org.postgresql.Driver
+  databaseValidationQuery: select 1
+
+#make sure imageRegistry is empty / not set, if it is set it must end with a trailing slash
+imageRegistry: nexusint.app.corp.dsa.de:20101/planthub/services/
+imageRegistrySecret: regcred
+
+# ClusterIP or NodePort
+serviceType: ClusterIP
+
+dbConfigMap: dsa-ph-svc-db-config
+dbConfigMapUrlKey: DB_URL
+
+plantServiceUrl: http://dsa-ph-plant-service/REST/plant/
+configServiceUrl: http://dsa-ph-config-service/REST/config/
+sysusrServiceUrl: http://dsa-ph-config-service/REST/config/
+
+dbSecret: dsa-ph-ph-product-service-db
+dbSecretUserKey: username
+dbSecretPwdKey: password
+
+rmqSecret: dsa-ph-ph-product-service-rmq
+rmqSecretUserKey: username
+rmqSecretPwdKey: password
+
+anetTrustedCAsConfigMap:
+anetTrustedCAsConfigMapKey:
+anetClientCertSecret:
+anetClientCertSecretCertKey:
+anetClientCertSecretPrivKeyKey:
+
+envConfigmap:
+  LOGGING_LEVEL_DE_DSA_PRODIS: INFO
+  DEFAULT_PLANT: API_TESTS
+  CTL_PRODUCT_SERVICE_SHOULDREQUEST: false
+  ANET_VEHICLE_DATA_SHOULDREQUEST: false
+  PLANT_HUB_PLANT_URI: http://dsa-ph-plant-service/REST/plant/
+  PLANT_HUB_CONFIG_URI: http://dsa-ph-ph-config-service/REST/config/
+  SYSUSR_SERVICE_URI: http://dsa-ph-sysuser-service/REST/sysusr/
