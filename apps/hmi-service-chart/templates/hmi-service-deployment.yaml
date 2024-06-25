@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Values.global.deploymentPrefix }}hmi-service
+  name: {{ .Values.global.deploymentPrefix }}hmi-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.global.deploymentPrefix }}hmi-service
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.deploymentPrefix }}hmi-service
+    spec:
+      containers:
+        - name: {{ .Values.global.deploymentPrefix }}hmi-service
+          image: {{ .Values.imageRegistry }}hmi-service:{{ .Chart.AppVersion }}
+          resources:
+            limits:
+              cpu: 100m
+              memory: 1Gi
+          ports:
+            - name: http
+              containerPort: 8083
+          env:
+            - name: spring_profiles_active
+              value: container
+            - name: PH_K8S_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: PH_K8S_DEPLOYMENTPREFIX
+              value: {{ .Values.global.deploymentPrefix }}
+            - name: RMQ_HOST
+              value: {{ .Values.global.deploymentPrefix }}rabbitmq
+            - name: MQTT_HOST
+              value: {{ .Values.global.deploymentPrefix }}rabbitmq-mqtts
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.dbConfigMap }}
+                  key: {{ .Values.dbConfigMapUrlKey }}
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecret }}
+                  key: {{ .Values.dbSecretUserKey }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.dbSecret }}
+                  key: {{ .Values.dbSecretPwdKey }}
+            - name: DB_DRIVER
+              value: {{ .Values.global.databaseDriver }}
+            - name: DB_QUERY
+              value: {{ .Values.global.databaseValidationQuery }}
+            - name: RMQ_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rmqSecret }}
+                  key: {{ .Values.rmqSecretUserKey }}
+            - name: RMQ_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.rmqSecret }}
+                  key: {{ .Values.rmqSecretPwdKey }}
+            - name: RTS_USER
+              value: {{ .Values.rtsUsername }}
+            - name: RTS_PASSWORD
+              value: {{ .Values.rtsPassword }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.global.deploymentPrefix }}hmi-service-env-config
+{{ if .Values.imageRegistrySecret }}
+      imagePullSecrets:
+        - name: {{ .Values.imageRegistrySecret }}
+{{ end }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: project
+                    operator: In
+                    values:
+                      - planthub

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Values.global.deploymentPrefix }}hmi-service
+  name: {{ .Values.global.deploymentPrefix }}hmi-service
+spec:
+  ports:
+    - name: 80-8083
+      port: 80
+      protocol: TCP
+      targetPort: 8083
+  selector:
+    app: {{ .Values.global.deploymentPrefix }}hmi-service
+  type: ClusterIP
