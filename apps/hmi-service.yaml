@@ -1,17 +1,25 @@
-project: default
-source:
-  repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
-  path: charts/hmi-service-chart
-  targetRevision: main
-  helm:
-    releaseName: hmi-service
-destination:
-  server: 'https://kubernetes.default.svc'
-  namespace: default
-syncPolicy:
-  automated:
-    prune: true
-    selfHeal: true
-  syncOptions:
-    - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hmi-service
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+    path: charts/hmi-service-chart
+    targetRevision: main
+    helm:
+      releaseName: hmi-service
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
