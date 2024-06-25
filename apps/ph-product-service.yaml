@@ -1,0 +1,17 @@
+project: default
+source:
+  repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+  path: charts/ph-product-service-chart
+  targetRevision: main
+  helm:
+    releaseName: ph-product-service
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: default
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
+  syncOptions:
+    - CreateNamespace=true
+
