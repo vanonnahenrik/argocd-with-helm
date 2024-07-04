@@ -14,7 +14,7 @@ spec:
     targetRevision: main
     helm:
       valueFiles:
-      - '${values}/config/helm-ph-product-service-values.yaml'
+      - '$values/config/helm-ph-product-service-values.yaml'
   - repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
     targetRevision: main
     ref: values
