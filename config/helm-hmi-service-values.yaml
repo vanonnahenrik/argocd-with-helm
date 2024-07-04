@@ -1,0 +1,22 @@
+global:
+  deploymentPrefix: dsa-ph-
+  databaseDriver: org.postgresql.Driver
+  databaseValidationQuery: select 1
+
+#make sure imageRegistry is empty / not set, if it is set it must end with a trailing slash
+imageRegistry: nexusint.app.corp.dsa.de:20101/planthub/services/
+imageRegistrySecret: regcred
+
+# ClusterIP or NodePort
+serviceType: ClusterIP
+
+dbConfigMap: dsa-ph-svc-db-config
+dbConfigMapUrlKey: DB_URL
+
+dbSecret: dsa-ph-hmi-service-db
+dbSecretUserKey: username
+dbSecretPwdKey: password
+
+rmqSecret: dsa-ph-hmi-service-rmq
+rmqSecretUserKey: username
+rmqSecretPwdKey: password

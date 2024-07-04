@@ -1,0 +1,34 @@
+global:
+  deploymentPrefix: dsa-ph-
+  databaseDriver: org.postgresql.Driver
+  databaseValidationQuery: select 1
+
+#make sure imageRegistry is empty / not set, if it is set it must end with a trailing slash
+imageRegistry: nexusint.app.corp.dsa.de:20101/planthub/services/
+imageRegistrySecret: regcred
+
+# ClusterIP or NodePort
+serviceType: ClusterIP
+
+dbConfigMap: dsa-ph-svc-db-config
+dbConfigMapUrlKey: DB_URL
+
+dbSecret: dsa-ph-ph-product-service-db
+dbSecretUserKey: username
+dbSecretPwdKey: password
+
+rmqSecret: dsa-ph-ph-product-service-rmq
+rmqSecretUserKey: username
+rmqSecretPwdKey: password
+
+anetTrustedCAsConfigMap:
+anetTrustedCAsConfigMapKey:
+anetClientCertSecret:
+anetClientCertSecretCertKey:
+anetClientCertSecretPrivKeyKey:
+
+envConfigmap:
+  LOGGING_LEVEL_DE_DSA_PRODIS: INFO
+  DEFAULT_PLANT: SET_ME
+  CTL_PRODUCT_SERVICE_SHOULDREQUEST: false
+  ANET_VEHICLE_DATA_SHOULDREQUEST: false
