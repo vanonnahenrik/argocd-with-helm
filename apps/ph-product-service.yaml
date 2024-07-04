@@ -13,8 +13,8 @@ spec:
     path: charts/ph-product-service-chart
     targetRevision: main
     helm:
-      # valueFiles:
-      # - '../../config/helm-ph-product-service-values.yaml'
+      valueFiles:
+      - '../../config/helm-ph-product-service-values.yaml'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
