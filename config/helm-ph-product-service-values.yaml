@@ -1,7 +1,7 @@
 global:
   deploymentPrefix: dsa-ph-
   databaseDriver: org.postgresql.Driver
-  databaseValidationQuery: select 1
+  databaseValidationQuery: select 2
 
 #make sure imageRegistry is empty / not set, if it is set it must end with a trailing slash
 imageRegistry: nexusint.app.corp.dsa.de:20101/planthub/services/
