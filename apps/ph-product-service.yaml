@@ -8,16 +8,13 @@ metadata:
 
 spec:
   project: default
-  sources:
-  - repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+  source:
+    repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
     path: charts/ph-product-service-chart
-    targetRevision: main
+    targetRevision: argotag 
     helm:
       valueFiles:
-      - '${values}/config/helm-ph-product-service-values.yaml'
-  - repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
-    targetRevision: argotag 
-    ref: values
+      - '../../config/helm-ph-product-service-values.yaml'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
