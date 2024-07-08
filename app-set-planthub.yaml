@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app-set-planthub 
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - chart: ph-product-service
+      - chart: hmi-service 
+  template:
+    metadata:
+      name: '{{chart}}'
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+        path: charts/{{chart}}-chart
+        targetRevision: main 
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
