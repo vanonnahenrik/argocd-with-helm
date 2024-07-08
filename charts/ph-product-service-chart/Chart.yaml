@@ -1,5 +1,5 @@
 apiVersion: v2
-name: dsa-ph-ph-product-service
+name: dsa-ph-product-service
 description: The ph-product service
 
 # A chart can be either an 'application' or a 'library' chart.
