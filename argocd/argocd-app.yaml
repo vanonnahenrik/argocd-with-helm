@@ -1,16 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ph-product-app
+  name: argocd-app 
   namespace: argocd 
 spec:
   project: default
   source:
     repoURL: https://github.com/vanonnahenrik/argocd-with-helm 
     targetRevision: main
-    path: ph-product-service-chart 
-    helm:
-      releaseName: ph-product-service 
+    path: argocd
   destination:
     server: https://kubernetes.default.svc
     namespace: default
