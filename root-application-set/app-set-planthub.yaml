@@ -9,6 +9,7 @@ spec:
       elements:
       - chart: ph-product-service
       - chart: hmi-service 
+      - chart: vci-service
   template:
     metadata:
       name: '{{chart}}'
