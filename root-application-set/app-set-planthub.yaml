@@ -9,7 +9,6 @@ spec:
       elements:
       - chart: ph-product-service
       - chart: hmi-service 
-      - chart: vci-service
   template:
     metadata:
       name: '{{chart}}'
@@ -19,6 +18,9 @@ spec:
         repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
         path: charts/{{chart}}-chart
         targetRevision: main 
+        helm:
+          valueFiles:
+            - '../../config/helm-{{chart}}-values.yaml'
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: default
