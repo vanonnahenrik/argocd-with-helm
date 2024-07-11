@@ -7,20 +7,20 @@ spec:
   generators:
   - list:
       elements:
-      - chart: ph-product-service
-      - chart: hmi-service 
+      - name: ph-product-service
+      - name: hmi-service 
   template:
     metadata:
-      name: '{{chart}}'
+      name: '{{name}}'
     spec:
       project: default
       source:
         repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
-        path: charts/{{chart}}-chart
+        path: charts/{{name}}-chart
         targetRevision: main 
         helm:
           valueFiles:
-            - '../../config/helm-{{chart}}-values.yaml'
+            - '../../config/helm-{{name}}-values.yaml'
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: default
