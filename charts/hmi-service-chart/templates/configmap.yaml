@@ -7,5 +7,5 @@ metadata:
 data:
   application.properties: |-
   {{- range $key, $val := .Values.envConfigMap}}
-  {{ $key }}: {{ $val | quote }}
-  {{- end}}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
