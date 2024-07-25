@@ -22,4 +22,4 @@ rmqSecretUserKey: username
 rmqSecretPwdKey: password
 
 envConfigMap:
-  mykey=myval
+  mykey: myval
