@@ -6,6 +6,6 @@ metadata:
     app: test-config
 data:
   application.properties: |-
-{{- range $key, $val := .Values.envConfigMap}}
-  {{ $key }}: {{ $val | quote }}
-  {{- end}}
+  {{- range $key, $val := .Values.envConfigMap}}
+    {{ $key }}: {{ $val | quote }}
+    {{- end}}
