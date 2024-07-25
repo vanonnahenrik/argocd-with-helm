@@ -20,3 +20,6 @@ dbSecretPwdKey: password
 rmqSecret: dsa-ph-hmi-service-rmq
 rmqSecretUserKey: username
 rmqSecretPwdKey: password
+
+envConfigMap:
+  mykey=myval
