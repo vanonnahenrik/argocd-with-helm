@@ -27,3 +27,9 @@ rtsPassword: dsa123
 envConfigMap:
   PLANT_SERVICE_URI: http://dsa-ph-plant-service/REST/plant/
   SYSUSR_SERVICE_URI: http://dsa-ph-sysuser-service/REST/sysusr/
+
+myconfigfiles:
+  myconfig.ini: |
+    [server]
+    port = 8080
+    debuglevel=1

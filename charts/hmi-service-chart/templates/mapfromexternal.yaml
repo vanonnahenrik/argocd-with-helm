@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-files-map 
+  labels:
+    app: conf-files-map
+data:
+{{- range $path, $config := .Values.myconfigfiles }}
+  {{ $path }}: |
+{{ $config | indent 4 -}}
+{{- end -}}
