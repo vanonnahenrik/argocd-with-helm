@@ -20,8 +20,8 @@ spec:
           command:
             - /bin/sh
             - -c
-            - echo "$(date)  $(cat /etc/config/application.properties)";
-            - while true; do echo "Running...";done;
+            - |
+              echo "$(date) $(cat /etc/config/application.properties)" && tail -f /dev/null
           ports:
             - containerPort: 80
           volumeMounts:
