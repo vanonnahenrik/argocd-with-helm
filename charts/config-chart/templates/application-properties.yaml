@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: application-properties-configmap
 data:
-    application.properties: |-
+  application.properties: |-
 {{ .Files.Get "config/application.properties" | indent 4}}
