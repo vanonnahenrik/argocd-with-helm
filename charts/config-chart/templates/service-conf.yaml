@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: serivce-conf-configmap
+data:
+    service.conf: |-
+{{ .Files.Get "config/service.conf" | indent 4}}

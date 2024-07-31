@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: config
+  namespace: argocd
+
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+    path: charts/config-chart
+    targetRevision: main
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
