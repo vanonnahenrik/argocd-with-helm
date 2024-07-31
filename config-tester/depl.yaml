@@ -19,8 +19,10 @@ spec:
           image: alpine:3
           command:
             - /bin/sh
-            - -c
-            - echo "$(date)  $(cat /etc/config/application.properties)";
+            - c
+            - |
+              echo "$(date)  $(cat /etc/config/application.properties)";
+              while true; do sleep 3600; done;
           ports:
             - containerPort: 80
           volumeMounts:
