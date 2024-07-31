@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: config-tester
+  annotations:
+  configmap.reloader.stakater.com/reload: "application-properties-configmap"
 spec:
   replicas: 
   selector:
