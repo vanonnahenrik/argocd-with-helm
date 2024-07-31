@@ -6,10 +6,10 @@ metadata:
 
 spec:
   project: default
-  sources:
-    - repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
-      path: config-tester 
-      targetRevision: main
+  source:
+    repoURL: 'https://github.com/vanonnahenrik/argocd-with-helm'
+    path: config-tester 
+    targetRevision: main
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
