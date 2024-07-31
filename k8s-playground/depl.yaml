@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: config-tester
 spec:
-  replicas: 1
+  replicas: 
   selector:
     matchLabels:
       app.kubernetes.io/name: configmap-volume
@@ -18,7 +18,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - while true; do echo "$(date)  $(cat /etc/config/myconfig.ini)";
+            - while true; do echo "$(date)  $(cat /etc/config/application.properties)";
               sleep 10; done;
           ports:
             - containerPort: 80
