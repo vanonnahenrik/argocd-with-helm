@@ -21,6 +21,7 @@ spec:
             - /bin/sh
             - -c
             - echo "$(date)  $(cat /etc/config/application.properties)";
+            - while true;sleep 10;done;
           ports:
             - containerPort: 80
           volumeMounts:
