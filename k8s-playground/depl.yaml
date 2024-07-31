@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: config-tester
   annotations:
-  configmap.reloader.stakater.com/reload: "application-properties-configmap"
+    configmap.reloader.stakater.com/reload: "foo-configmap"
 spec:
   replicas: 
   selector:
@@ -20,8 +20,8 @@ spec:
           command:
             - /bin/sh
             - -c
-            - echo "$(date)  $(cat /etc/config/application.properties)";
-            - while true;sleep 10;done;
+            - while true; do echo "$(date)  $(cat /etc/config/application.properties)";
+              sleep 10; done;
           ports:
             - containerPort: 80
           volumeMounts:
