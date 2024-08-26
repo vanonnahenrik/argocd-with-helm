@@ -5,6 +5,6 @@ metadata:
   labels:
     app: {{ .Values.global.deploymentPrefix }}hmi-service
 data:
-  {{- range $key, $val := .Values.envConfigmap }}
+  {{- range $key, $val := .Values.envConfigMap }}
   {{ $key }}: {{ $val | quote }}
   {{- end}}
