@@ -21,9 +21,6 @@ spec:
         helm:
           valueFiles:
             - '../../config/helm-{{name}}-values.yaml'
-        envFrom:
-          - configMapRef:
-              name: {{name}}-env-config
       destination:
         server: 'https://kubernetes.default.svc'
         namespace: default
